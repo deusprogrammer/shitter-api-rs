@@ -1,8 +1,7 @@
-FROM rust:1.31
+FROM rustlang/rust:nightly
 
-WORKDIR /usr/src/myapp
-COPY . .
+COPY ./ ./
 
-RUN cargo install --path .
+RUN cargo build --release
 
-CMD ["myapp"]
+CMD ["./target/release/shitter-api"]
