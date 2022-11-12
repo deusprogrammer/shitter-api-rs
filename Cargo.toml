@@ -1,0 +1,22 @@
+[package]
+name = "shitter-api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = "1.0.130"
+rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", branch = "master" }
+rocket-jwt = { git = "https://github.com/deusprogrammer/rocket-jwt", branch = "exp-disabled" }
+jsonwebtoken = "8.1.1"
+chrono = "0.4.23"
+
+[dependencies.rocket]
+version = "0.5.0-rc.1"
+features = ["json"]
+
+[dependencies.mongodb]
+version = "2.2.0"
+default-features = false
+features = ["sync"] 
