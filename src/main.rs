@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::env;
 
+use mongodb::options::FindOptions;
 use rocket::serde::json::Json;
 use rocket::http::{Method, Status};
 use rocket::{get, post, routes};
@@ -68,7 +69,7 @@ fn get_shits() -> Result<Json<Vec<ShitRO>>, Status> {
     let col: Collection<ShitEntity> = db.collection("shits");
 
     let mut shits:Vec<ShitRO> = vec![];
-    let cursor = col.find(doc!{}, None).expect("I don't know what I'm doing");
+    let cursor = col.find(doc!{}, FindOptions::builder().sort(doc!{"date": -1}).build()).expect("Failed to find shits");
 
     for result in cursor {
         let ShitEntity {id, username, text, date} = result.unwrap();
