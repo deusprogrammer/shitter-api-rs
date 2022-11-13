@@ -22,6 +22,7 @@ use mongodb::{
 };
 
 static SECRET_KEY:&str = env!("JWT_SIGNING_KEY");
+const ANONYMOUS_ROLE:&str = "ANONYMOUS_ROLE";
 
 #[jwt(SECRET_KEY)]
 struct UserClaim {
@@ -86,6 +87,10 @@ fn get_shits() -> Result<Json<Vec<ShitRO>>, Status> {
 
 #[post("/", data="<shit_request>")]
 fn create_shit(shit_request: Json<ShitRequest>, user: UserClaim) -> Result<Json<ShitRO>, Status> {
+    if user.roles.contains(&ANONYMOUS_ROLE.to_string()) {
+        return Err(Status::Forbidden);
+    }
+
     let uri = match env::var("DB_URI") {
         Ok(v) => v.to_string(),
         Err(_) => format!("Error loading env variable"),
@@ -112,7 +117,7 @@ fn create_shit(shit_request: Json<ShitRequest>, user: UserClaim) -> Result<Json<
         date: new_shit.date.to_owned()
     };
 
-    Ok(Json(created_shit))
+    return Ok(Json(created_shit));
 }
 
 #[rocket::main]
