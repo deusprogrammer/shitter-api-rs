@@ -22,7 +22,7 @@ use mongodb::{
 };
 
 static SECRET_KEY:&str = env!("JWT_SIGNING_KEY");
-const ANONYMOUS_ROLE:&str = "ANONYMOUS_ROLE";
+const ANONYMOUS_ROLE:&str = "ANONYMOUS_USER";
 
 #[jwt(SECRET_KEY)]
 struct UserClaim {
